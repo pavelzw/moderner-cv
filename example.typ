@@ -1,6 +1,6 @@
-#import "modern-cv.typ": *
+#import "moderner-cv.typ": *
 
-#show: modern-cv.with(
+#show: moderner-cv.with(
   name: "Jane Doe",
   lang: "en",
   social: (

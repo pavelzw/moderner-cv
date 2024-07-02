@@ -1,5 +1,5 @@
 [project]
-name = "modern-cv-typst"
+name = "moderner-cv"
 channels = ["conda-forge"]
 platforms = ["osx-arm64", "linux-64", "win-64"]
 

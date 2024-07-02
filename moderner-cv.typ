@@ -57,7 +57,7 @@
   )
 }
 
-#let modern-cv(
+#let moderner-cv(
   name: [],
   subtitle: [CV],
   social: (:),
