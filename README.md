@@ -11,7 +11,7 @@ You can download fontawesome [here](https://fontawesome.com/download).
 ## Usage
 
 ```typst
-#import "moderner-cv.typ": *
+#import "@preview/moderner-cv:0.1.0": *
 
 #show: moderner-cv.with(
   name: "Jane Doe",

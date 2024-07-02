@@ -10,8 +10,6 @@
   ),
 )
 
-#show heading.where(level: 1): set block(above: 5pt)
-
 = Education
 
 #cv-entry(
