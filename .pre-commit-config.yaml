@@ -1,0 +1,37 @@
+exclude: ^.pixi
+repos:
+  - repo: local
+    hooks:
+      # ensure pixi environments are up to date
+      # workaround for https://github.com/prefix-dev/pixi/issues/1482
+      - id: pixi-install
+        name: pixi-install
+        entry: pixi install -e default
+        language: system
+        always_run: true
+        require_serial: true
+        pass_filenames: false
+      # typstyle
+      - id: typstyle
+        name: typstyle
+        entry: pixi run typstyle -i
+        language: system
+        files: \.typ$
+      # pre-commit-hooks
+      - id: trailing-whitespace-fixer
+        name: trailing-whitespace-fixer
+        entry: pixi run trailing-whitespace-fixer
+        language: system
+        types: [text]
+      - id: end-of-file-fixer
+        name: end-of-file-fixer
+        entry: pixi run end-of-file-fixer
+        language: system
+        types: [text]
+      # typos
+      - id: typos
+        name: typos
+        entry: pixi run typos --force-exclude
+        language: system
+        types: [text]
+        require_serial: true

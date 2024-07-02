@@ -6,7 +6,7 @@
   social: (
     email: "jane.doe@example.com",
     github: "jane-doe",
-    linkedin: "jane-doe"
+    linkedin: "jane-doe",
   ),
 )
 
@@ -31,13 +31,13 @@
   date: [4/2022 -- 7/2023],
   employer: [The Snake Company],
   title: [Snake Specialist],
-  [#linebreak()#text(10pt, lorem(30))]
+  [#linebreak()#text(10pt, lorem(30))],
 )
 #cv-entry(
   date: [4/2022 -- 7/2023],
   employer: [Viper Ventures],
   title: [Working Student],
-  [#linebreak()#text(10pt, lorem(30))]
+  [#linebreak()#text(10pt, lorem(30))],
 )
 
 = Programming Skills

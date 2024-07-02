@@ -39,7 +39,9 @@
     socialsList.push(social("github", "https://github.com/", socials.github))
   }
   if "linkedin" in socials {
-    socialsList.push(social("linkedin", "https://linkedin.com/in/", socials.linkedin))
+    socialsList.push(
+      social("linkedin", "https://linkedin.com/in/", socials.linkedin),
+    )
   }
 
   let socialStack = stack(
@@ -51,9 +53,10 @@
   stack(
     dir: ltr,
     titleStack,
-    align(right + top,
-      socialStack
-    )
+    align(
+      right + top,
+      socialStack,
+    ),
   )
 }
 
@@ -74,11 +77,11 @@
       bottom: 15mm,
       left: 15mm,
       right: 15mm,
-    )
+    ),
   )
   #set text(
     font: font,
-    lang: lang
+    lang: lang,
   )
 
   #show heading: it => {
@@ -109,7 +112,6 @@
     #name\
     #datetime.today().display("[month repr:long] [day], [year]")
   ]
-
 ]
 
 #let cv-line(left-side, right-side) = {
