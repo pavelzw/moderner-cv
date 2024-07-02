@@ -16,4 +16,4 @@ repository = "https://github.com/pavelzw/moderner-cv"
 [template]
 path = "template"
 entrypoint = "example.typ"
-thumbnail = ".github/assets/example.png"
+thumbnail = "assets/example.png"

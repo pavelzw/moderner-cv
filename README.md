@@ -28,7 +28,7 @@ You can download fontawesome [here](https://fontawesome.com/download).
 
 ## Examples
 
-![Jane Doe's CV](.github/assets/example.png)
+![Jane Doe's CV](assets/example.png)
 
 ## Building and Testing Locally
 
