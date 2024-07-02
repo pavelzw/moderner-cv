@@ -1,4 +1,4 @@
-#import "moderner-cv.typ": *
+#import "@preview/moderner-cv:0.1.0": *
 
 #show: moderner-cv.with(
   name: "Jane Doe",

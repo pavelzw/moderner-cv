@@ -154,7 +154,6 @@
   )
 }
 
-// TODO: adjust list style
 #let cv-list-item(item) = {
   _cv-line(
     [],
