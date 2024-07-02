@@ -1,0 +1,255 @@
+version: 5
+environments:
+  default:
+    channels:
+    - url: https://conda.anaconda.org/conda-forge/
+    packages:
+      linux-64:
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-2_gnu.tar.bz2
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/ca-certificates-2024.6.2-hbcca054_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/libgcc-ng-14.1.0-h77fa898_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/libgomp-14.1.0-h77fa898_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/openssl-3.3.1-h4ab18f5_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/typst-0.11.1-h3c1dd8f_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/typstyle-0.11.28-he9194b0_0.conda
+      osx-arm64:
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/typst-0.11.1-hac6298f_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/typstyle-0.11.28-h6e96688_0.conda
+      win-64:
+      - conda: https://conda.anaconda.org/conda-forge/win-64/typst-0.11.1-ha073cba_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/typstyle-0.11.28-ha073cba_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/ucrt-10.0.22621.0-h57928b3_0.tar.bz2
+      - conda: https://conda.anaconda.org/conda-forge/win-64/vc-14.3-h8a93ad2_20.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.40.33810-ha82c5b3_20.conda
+packages:
+- kind: conda
+  name: _libgcc_mutex
+  version: '0.1'
+  build: conda_forge
+  subdir: linux-64
+  url: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
+  sha256: fe51de6107f9edc7aa4f786a70f4a883943bc9d39b3bb7307c04c41410990726
+  md5: d7c89558ba9fa0495403155b64376d81
+  license: None
+  size: 2562
+  timestamp: 1578324546067
+- kind: conda
+  name: _openmp_mutex
+  version: '4.5'
+  build: 2_gnu
+  build_number: 16
+  subdir: linux-64
+  url: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-2_gnu.tar.bz2
+  sha256: fbe2c5e56a653bebb982eda4876a9178aedfc2b545f25d0ce9c4c0b508253d22
+  md5: 73aaf86a425cc6e73fcf236a5a46396d
+  depends:
+  - _libgcc_mutex 0.1 conda_forge
+  - libgomp >=7.5.0
+  constrains:
+  - openmp_impl 9999
+  license: BSD-3-Clause
+  license_family: BSD
+  size: 23621
+  timestamp: 1650670423406
+- kind: conda
+  name: ca-certificates
+  version: 2024.6.2
+  build: hbcca054_0
+  subdir: linux-64
+  url: https://conda.anaconda.org/conda-forge/linux-64/ca-certificates-2024.6.2-hbcca054_0.conda
+  sha256: 979af0932b2a5a26112044891a2d79e402e5ae8166f50fa48b8ebae47c0a2d65
+  md5: 847c3c2905cc467cea52c24f9cfa8080
+  license: ISC
+  size: 156035
+  timestamp: 1717311767102
+- kind: conda
+  name: libgcc-ng
+  version: 14.1.0
+  build: h77fa898_0
+  subdir: linux-64
+  url: https://conda.anaconda.org/conda-forge/linux-64/libgcc-ng-14.1.0-h77fa898_0.conda
+  sha256: b8e869ac96591cda2704bf7e77a301025e405227791a0bddf14a3dac65125538
+  md5: ca0fad6a41ddaef54a153b78eccb5037
+  depends:
+  - _libgcc_mutex 0.1 conda_forge
+  - _openmp_mutex >=4.5
+  constrains:
+  - libgomp 14.1.0 h77fa898_0
+  license: GPL-3.0-only WITH GCC-exception-3.1
+  license_family: GPL
+  size: 842109
+  timestamp: 1719538896937
+- kind: conda
+  name: libgomp
+  version: 14.1.0
+  build: h77fa898_0
+  subdir: linux-64
+  url: https://conda.anaconda.org/conda-forge/linux-64/libgomp-14.1.0-h77fa898_0.conda
+  sha256: 7699df61a1f6c644b3576a40f54791561f2845983120477a16116b951c9cdb05
+  md5: ae061a5ed5f05818acdf9adab72c146d
+  depends:
+  - _libgcc_mutex 0.1 conda_forge
+  license: GPL-3.0-only WITH GCC-exception-3.1
+  license_family: GPL
+  size: 456925
+  timestamp: 1719538796073
+- kind: conda
+  name: openssl
+  version: 3.3.1
+  build: h4ab18f5_1
+  build_number: 1
+  subdir: linux-64
+  url: https://conda.anaconda.org/conda-forge/linux-64/openssl-3.3.1-h4ab18f5_1.conda
+  sha256: ff3faf8d4c1c9aa4bd3263b596a68fcc6ac910297f354b2ce28718a3509db6d9
+  md5: b1e9d076f14e8d776213fd5047b4c3d9
+  depends:
+  - ca-certificates
+  - libgcc-ng >=12
+  constrains:
+  - pyopenssl >=22.1
+  license: Apache-2.0
+  license_family: Apache
+  size: 2896610
+  timestamp: 1719363957188
+- kind: conda
+  name: typst
+  version: 0.11.1
+  build: h3c1dd8f_0
+  subdir: linux-64
+  url: https://conda.anaconda.org/conda-forge/linux-64/typst-0.11.1-h3c1dd8f_0.conda
+  sha256: 9417e0512c7c3a6740ecd73c154573c9e0963e3ff879ab7aa74a4a7796811d60
+  md5: ae4e020c572c6e177f440b8dce321fe6
+  depends:
+  - libgcc-ng >=12
+  - openssl >=3.3.0,<4.0a0
+  license: Apache-2.0
+  license_family: Apache
+  size: 11653430
+  timestamp: 1716008198593
+- kind: conda
+  name: typst
+  version: 0.11.1
+  build: ha073cba_0
+  subdir: win-64
+  url: https://conda.anaconda.org/conda-forge/win-64/typst-0.11.1-ha073cba_0.conda
+  sha256: f8d1d6e2feb13bb1b532ef797b25c4239c1a56b33c027ee858f97d1d018dbec0
+  md5: 8b8c7e57c8c167f9b20c9230d40ea56b
+  depends:
+  - ucrt >=10.0.20348.0
+  - vc >=14.2,<15
+  - vc14_runtime >=14.29.30139
+  license: Apache-2.0
+  license_family: Apache
+  size: 11538744
+  timestamp: 1716009095290
+- kind: conda
+  name: typst
+  version: 0.11.1
+  build: hac6298f_0
+  subdir: osx-arm64
+  url: https://conda.anaconda.org/conda-forge/osx-arm64/typst-0.11.1-hac6298f_0.conda
+  sha256: a8b94bd38614026e43790fd240d5664000f8e0ea84a35c0f8b1a41572ff57ce5
+  md5: 2a19dcbf1ddee8d838dff3d31492297b
+  depends:
+  - __osx >=11.0
+  constrains:
+  - __osx >=11.0
+  license: Apache-2.0
+  license_family: Apache
+  size: 11149875
+  timestamp: 1716008519686
+- kind: conda
+  name: typstyle
+  version: 0.11.28
+  build: h6e96688_0
+  subdir: osx-arm64
+  url: https://conda.anaconda.org/conda-forge/osx-arm64/typstyle-0.11.28-h6e96688_0.conda
+  sha256: 2bf341326b435faf67e31c699dffc87f433da4ebe5f89a69b23d75be88bc0838
+  md5: 10d9530061752b76a2e6d8a3975d3fe3
+  depends:
+  - __osx >=11.0
+  constrains:
+  - __osx >=11.0
+  license: Apache-2.0
+  license_family: APACHE
+  size: 494920
+  timestamp: 1719341565158
+- kind: conda
+  name: typstyle
+  version: 0.11.28
+  build: ha073cba_0
+  subdir: win-64
+  url: https://conda.anaconda.org/conda-forge/win-64/typstyle-0.11.28-ha073cba_0.conda
+  sha256: 6dd4ed75cd67723b51a6d6d6edad8a6db3c2c0b6f251aac921e996693226a140
+  md5: d09617a2a6912b34dd8bd2e11635b9b2
+  depends:
+  - ucrt >=10.0.20348.0
+  - vc >=14.2,<15
+  - vc14_runtime >=14.29.30139
+  license: Apache-2.0
+  license_family: APACHE
+  size: 472156
+  timestamp: 1719342429952
+- kind: conda
+  name: typstyle
+  version: 0.11.28
+  build: he9194b0_0
+  subdir: linux-64
+  url: https://conda.anaconda.org/conda-forge/linux-64/typstyle-0.11.28-he9194b0_0.conda
+  sha256: b0afdeb243aedbf7a70a02e2163667b3f004a959983e4757154ce178be6cd5b4
+  md5: 8aa9ffab516ef373ddf881056ff95e36
+  depends:
+  - libgcc-ng >=12
+  license: Apache-2.0
+  license_family: APACHE
+  size: 543982
+  timestamp: 1719341501635
+- kind: conda
+  name: ucrt
+  version: 10.0.22621.0
+  build: h57928b3_0
+  subdir: win-64
+  url: https://conda.anaconda.org/conda-forge/win-64/ucrt-10.0.22621.0-h57928b3_0.tar.bz2
+  sha256: f29cdaf8712008f6b419b8b1a403923b00ab2504bfe0fb2ba8eb60e72d4f14c6
+  md5: 72608f6cd3e5898229c3ea16deb1ac43
+  constrains:
+  - vs2015_runtime >=14.29.30037
+  license: LicenseRef-Proprietary
+  license_family: PROPRIETARY
+  size: 1283972
+  timestamp: 1666630199266
+- kind: conda
+  name: vc
+  version: '14.3'
+  build: h8a93ad2_20
+  build_number: 20
+  subdir: win-64
+  url: https://conda.anaconda.org/conda-forge/win-64/vc-14.3-h8a93ad2_20.conda
+  sha256: 23ac5feb15a9adf3ab2b8c4dcd63650f8b7ae860c5ceb073e49cf71d203eddef
+  md5: 8558f367e1d7700554f7cdb823c46faf
+  depends:
+  - vc14_runtime >=14.40.33810
+  track_features:
+  - vc14
+  license: BSD-3-Clause
+  license_family: BSD
+  size: 17391
+  timestamp: 1717709040616
+- kind: conda
+  name: vc14_runtime
+  version: 14.40.33810
+  build: ha82c5b3_20
+  build_number: 20
+  subdir: win-64
+  url: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.40.33810-ha82c5b3_20.conda
+  sha256: af3cfa347e3d7c1277e9b964b0849a9a9f095bff61836cb3c3a89862fbc32e17
+  md5: e39cc4c34c53654ec939558993d9dc5b
+  depends:
+  - ucrt >=10.0.20348.0
+  constrains:
+  - vs2015_runtime 14.40.33810.* *_20
+  license: LicenseRef-ProprietaryMicrosoft
+  license_family: Proprietary
+  size: 751934
+  timestamp: 1717709031266
