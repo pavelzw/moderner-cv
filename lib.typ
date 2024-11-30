@@ -1,4 +1,4 @@
-#import "@preview/fontawesome:0.2.1": *
+#import "@preview/fontawesome:0.5.0": *
 
 #let _cv-line(left, right, ..args) = {
   set block(below: 0pt)
