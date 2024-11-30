@@ -23,9 +23,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up pixi
         uses: prefix-dev/setup-pixi@ba3bb36eb2066252b2363392b7739741bb777659
-      - name: Link packages
+      - name: Use local package
         run: |
-          mkdir -p ~/.local/share/typst/packages/preview/moderner-cv
-          ln -s $(pwd) ~/.local/share/typst/packages/preview/moderner-cv/0.1.0
+          sed -i 's/#import .*/#import "..\/lib.typ"/' example.typ
       - name: compile
         run: pixi run compile
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          path: template/example.pdf
+          if-no-files-found: error
