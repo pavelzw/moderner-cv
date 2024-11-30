@@ -25,7 +25,7 @@ jobs:
         uses: prefix-dev/setup-pixi@ba3bb36eb2066252b2363392b7739741bb777659
       - name: Use local package
         run: |
-          sed -i 's/#import .*/#import "..\/lib.typ"/' template/example.typ
+          sed -i 's/#import .*/#import "..\/lib.typ": */' template/example.typ
       - name: compile
         run: pixi run compile
       - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
