@@ -4,9 +4,13 @@
   name: "Jane Doe",
   lang: "en",
   social: (
+    // predefined socials: phone, email, github, linkedin, x, bluesky
     email: "jane.doe@example.com",
     github: "jane-doe",
     linkedin: "jane-doe",
+    // custom socials: (icon, link, body)
+    // any fontawesome icon can be used: https://fontawesome.com/search
+    website: ("link", "https://example.me", "example.me"),
   ),
 )
 

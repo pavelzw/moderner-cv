@@ -28,20 +28,38 @@
     #fa-icon(icon) #link(link_prefix + username)[#username]
   ]
 
+  let custom-social(icon, dest, body) = [
+    #fa-icon(icon) #link(dest, body)
+  ]
+
+  let socialsDict = (
+    // key: (faIcon, linkPrefix)
+    phone: ("phone", "tel:"),
+    email: ("envelope", "mailto:"),
+    github: ("github", "https://github.com/"),
+    linkedin: ("linkedin", "https://linkedin.com/in/"),
+    x: ("x-twitter", "https://twitter.com/"),
+    bluesky: ("bluesky", "https://bsky.app/profile/"),
+  )
+
   let socialsList = ()
-  if "phone" in socials {
-    socialsList.push(social("phone", "tel:", socials.phone))
-  }
-  if "email" in socials {
-    socialsList.push(social("envelope", "mailto:", socials.email))
-  }
-  if "github" in socials {
-    socialsList.push(social("github", "https://github.com/", socials.github))
-  }
-  if "linkedin" in socials {
-    socialsList.push(
-      social("linkedin", "https://linkedin.com/in/", socials.linkedin),
-    )
+  for entry in socials {
+    assert(type(entry) == array, message: "Invalid social entry type.")
+    assert(entry.len() == 2, message: "Invalid social entry length.")
+    let (key, value) = entry
+    if type(value) == str {
+      if key not in socialsDict {
+        panic("Unknown social key: " + key)
+      }
+      let (icon, linkPrefix) = socialsDict.at(key)
+      socialsList.push(social(icon, linkPrefix, value))
+    } else if type(value) == array {
+      assert(value.len() == 3, message: "Invalid social entry: " + key)
+      let (icon, dest, body) = value
+      socialsList.push(custom-social(icon, dest, body))
+    } else {
+      panic("Invalid social entry: " + entry)
+    }
   }
 
   let socialStack = stack(
