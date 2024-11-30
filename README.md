@@ -1,5 +1,16 @@
 # moderner-cv
 
+[![License][license-badge]][license]
+[![CI][ci-badge]][ci]
+[![Latest release][latest-release-badge]][typst-universe]
+
+[license-badge]: https://img.shields.io/github/license/pavelzw/moderner-cv?style=flat-square
+[license]: ./LICENSE
+[ci-badge]: https://img.shields.io/github/actions/workflow/status/pavelzw/moderner-cv/ci.yml?style=flat-square
+[ci]: https://github.com/pavelzw/moderner-cv/actions/
+[latest-release-badge]: https://img.shields.io/github/v/tag/pavelzw/moderner-cv?style=flat-square&label=latest&sort=semver
+[typst-universe]: https://typst.app/universe/package/moderner-cv
+
 This is a typst adaptation of LaTeX's [moderncv](https://github.com/moderncv/moderncv), a modern curriculum vitae class.
 
 ## Requirements
@@ -21,7 +32,7 @@ You can download fontawesome [here](https://fontawesome.com/download).
 ## Usage
 
 ```typst
-#import "@preview/moderner-cv:0.1.0": *
+#import "@preview/moderner-cv:0.1.1": *
 
 #show: moderner-cv.with(
   name: "Jane Doe",
@@ -46,14 +57,4 @@ You can download fontawesome [here](https://fontawesome.com/download).
 ## Building and Testing Locally
 
 To build and test the template locally, you can run `pixi run watch` in the root of this repository.
-Please ensure to have linked this package to your local typst packages, see [here](https://github.com/typst/packages#local-packages):
-
-```bash
-# linux
-mkdir -p ~/.local/share/typst/packages/preview/moderner-cv
-ln -s $(pwd) ~/.local/share/typst/packages/preview/moderner-cv/0.1.0
-
-# macos
-mkdir -p ~/Library/Application\ Support/typst/packages/preview/moderner-cv
-ln -s $(pwd) ~/Library/Application\ Support/typst/packages/preview/moderner-cv/0.1.0
-```
+Please ensure to use the version of moderner-cv that is in this repository instead of the one on the typst universe by temporarily changing the import in [`example.typ`](./template/example.typ) to `#import "../lib.typ": *`.
