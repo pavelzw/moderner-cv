@@ -15,6 +15,10 @@
 #let _header(
   title: [],
   subtitle: [],
+  image-path: none,
+  image-height: none,
+  image-frame-stroke: auto,
+  color: moderncv-blue,
   socials: (:),
 ) = {
   let titleStack = stack(
@@ -68,6 +72,41 @@
     ..socialsList,
   )
 
+  let imageStack = []
+  
+  if image-path != none {
+    let image = image(image-path, height: image-height)
+
+    let imageFramed = []
+
+    if image-frame-stroke == none { // no frame
+      imageFramed = image
+    } else {
+      if image-frame-stroke == auto { // default stroke
+        image-frame-stroke = 1pt + color 
+      } else { 
+        image-frame-stroke = stroke(image-frame-stroke)
+        if image-frame-stroke.paint == auto { // use the main color by default
+          image-frame-stroke = stroke((
+            paint:color, 
+            thickness:image-frame-stroke.thickness,
+            cap:image-frame-stroke.cap,
+            join:image-frame-stroke.join,
+            dash:image-frame-stroke.dash,
+            miter-limit:image-frame-stroke.miter-limit
+          ))
+        }
+      }
+      imageFramed = rect(image, stroke:image-frame-stroke)
+    }
+
+    imageStack = stack(
+      dir: ltr,
+      h(1em),
+      imageFramed
+    )
+  }
+
   stack(
     dir: ltr,
     titleStack,
@@ -75,6 +114,7 @@
       right + top,
       socialStack,
     ),
+    imageStack,
   )
 }
 
@@ -85,6 +125,9 @@
   color: moderncv-blue,
   lang: "en",
   font: ("New Computer Modern"),
+  image-path: none,
+  image-height: 8em,
+  image-frame-stroke: auto,
   show-footer: true,
   body,
 ) = [
@@ -121,7 +164,12 @@
     )
   }
 
-  #_header(title: name, subtitle: subtitle, socials: social)
+  #_header(
+    title: name, subtitle: subtitle,
+    image-path: image-path, image-height: image-height, image-frame-stroke: image-frame-stroke,
+    color:color,
+    socials: social
+  )
 
   #body
 
