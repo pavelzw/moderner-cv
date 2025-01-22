@@ -52,7 +52,8 @@ You can download fontawesome [here](https://fontawesome.com/download).
 ```
 ### Image
 
-To add an image to your curriculum vitae, you can a path to that image to the `image-path` parameter (the path should be from the rrot of your project and start with a `/`). Here are te additional parameters:
+To add an image to your curriculum vitae, you can a path to that image to the `image-path` parameter (the path should be from the root of your project and start with a `/`). Here are the additional parameters:
+
 - `image-height`: size of the image
 - `image-frame-stroke`: stroke of the frame. By default is 1pt + the main of the file. Can be any stroke value. Set to `none` to remove the frame.
 
