@@ -87,6 +87,7 @@
       } else { 
         image-frame-stroke = stroke(image-frame-stroke)
         if image-frame-stroke.paint == auto { // use the main color by default
+          // fields on stroke are not yet mutable
           image-frame-stroke = stroke((
             paint:color, 
             thickness:image-frame-stroke.thickness,
