@@ -84,18 +84,20 @@
   social: (:),
   color: moderncv-blue,
   lang: "en",
-  font: ("New Computer Modern"),
+  font: "New Computer Modern",
+  paper: "a4",
+  margin: (
+    top: 10mm,
+    bottom: 15mm,
+    left: 15mm,
+    right: 15mm,
+  ),
   show-footer: true,
   body,
 ) = [
   #set page(
-    paper: "a4",
-    margin: (
-      top: 10mm,
-      bottom: 15mm,
-      left: 15mm,
-      right: 15mm,
-    ),
+    paper: paper,
+    margin: margin,
   )
   #set text(
     font: font,
