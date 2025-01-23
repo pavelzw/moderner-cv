@@ -32,7 +32,7 @@ You can download fontawesome [here](https://fontawesome.com/download).
 ## Usage
 
 ```typst
-#import "@preview/moderner-cv:0.1.1": *
+#import "@preview/moderner-cv:0.1.2": *
 
 #show: moderner-cv.with(
   name: "Jane Doe",
@@ -50,6 +50,7 @@ You can download fontawesome [here](https://fontawesome.com/download).
 
 // ...
 ```
+
 ### Image
 
 To add an image to your curriculum vitae, you can a path to that image to the `image-path` parameter (the path should be from the root of your project and start with a `/`). Here are the additional parameters:
