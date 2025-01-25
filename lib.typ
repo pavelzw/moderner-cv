@@ -15,8 +15,7 @@
 #let _header(
   title: [],
   subtitle: [],
-  image-path: none,
-  image-height: none,
+  image: none,
   image-frame-stroke: auto,
   color: moderncv-blue,
   socials: (:),
@@ -74,8 +73,7 @@
 
   let imageStack = []
 
-  if image-path != none {
-    let image = image(image-path, height: image-height)
+  if image != none {
 
     let imageFramed = []
 
@@ -129,8 +127,7 @@
   color: moderncv-blue,
   lang: "en",
   font: "New Computer Modern",
-  image-path: none,
-  image-height: 8em,
+  image: none,
   image-frame-stroke: auto,
   paper: "a4",
   margin: (
@@ -173,8 +170,7 @@
   #_header(
     title: name,
     subtitle: subtitle,
-    image-path: image-path,
-    image-height: image-height,
+    image: image,
     image-frame-stroke: image-frame-stroke,
     color: color,
     socials: social,
