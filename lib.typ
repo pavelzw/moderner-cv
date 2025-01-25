@@ -74,7 +74,6 @@
   let imageStack = []
 
   if image != none {
-
     let imageFramed = []
 
     if image-frame-stroke == none {
