@@ -11,6 +11,7 @@
   )
 }
 #let moderncv-blue = rgb("#3973AF")
+#let light-gray = rgb("#737373")
 
 #let _header(
   title: [],
@@ -19,21 +20,23 @@
   image-height: none,
   image-frame-stroke: auto,
   color: moderncv-blue,
+  subtitle-color: light-gray,
+  socials-color: light-gray,
   socials: (:),
 ) = {
   let titleStack = stack(
     dir: ttb,
     spacing: 1em,
     text(size: 30pt, title),
-    text(size: 20pt, subtitle),
+    text(size: 20pt, subtitle, fill: subtitle-color),
   )
 
   let social(icon, link_prefix, username) = [
-    #fa-icon(icon) #link(link_prefix + username)[#username]
+    #text(socials-color)[#fa-icon(icon) #link(link_prefix + username)[#username]]
   ]
 
   let custom-social(icon, dest, body) = [
-    #fa-icon(icon) #link(dest, body)
+    #text(socials-color)[#fa-icon(icon) #link(dest, body)]
   ]
 
   let socialsDict = (
@@ -127,6 +130,8 @@
   subtitle: [CV],
   social: (:),
   color: moderncv-blue,
+  subtitle-color: light-gray,
+  socials-color: light-gray,
   lang: "en",
   font: "New Computer Modern",
   image-path: none,
@@ -177,6 +182,8 @@
     image-height: image-height,
     image-frame-stroke: image-frame-stroke,
     color: color,
+    subtitle-color: subtitle-color,
+    socials-color: socials-color,
     socials: social,
   )
 
