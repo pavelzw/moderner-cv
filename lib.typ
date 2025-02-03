@@ -1,7 +1,7 @@
 #import "@preview/fontawesome:0.5.0": *
 
 #let _cv-line(left, right, ..args) = {
-  set block(below: 0pt)
+  set block(below: 0pt, above: 1pt)
   table(
     columns: (1fr, 5fr),
     stroke: none,
