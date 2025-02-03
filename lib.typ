@@ -61,6 +61,7 @@
     linkedin: ("linkedin", "https://linkedin.com/in/"),
     x: ("x-twitter", "https://twitter.com/"),
     bluesky: ("bluesky", "https://bsky.app/profile/"),
+    address: ("", ""),
   )
 
   let socialsList = ()
