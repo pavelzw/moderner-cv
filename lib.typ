@@ -22,21 +22,35 @@
   color: moderncv-blue,
   subtitle-color: light-gray,
   socials-color: light-gray,
+  emphasize: false,
   socials: (:),
 ) = {
+  let subtitle-emphasis = "normal"
+  if emphasize {
+    subtitle-emphasis = "italic"
+  }
+
   let titleStack = stack(
     dir: ttb,
     spacing: 1em,
     text(size: 30pt, title),
-    text(size: 20pt, subtitle, fill: subtitle-color),
+    text(size: 20pt, subtitle, style: subtitle-emphasis, fill: subtitle-color),
   )
 
   let social(icon, link_prefix, username) = [
-    #text(socials-color)[#fa-icon(icon) #link(link_prefix + username)[#username]]
+    #if emphasize [
+      #emph[#text(socials-color)[#fa-icon(icon) #link(link_prefix + username)[#username]]]
+    ] else [
+      #text(socials-color)[#fa-icon(icon) #link(link_prefix + username)[#username]]
+    ]
   ]
 
   let custom-social(icon, dest, body) = [
-    #text(socials-color)[#fa-icon(icon) #link(dest, body)]
+    #if emphasize [
+      #emph[#text(socials-color)[#fa-icon(icon) #link(dest, body)]]
+    ] else [
+      #text(socials-color)[#fa-icon(icon) #link(dest, body)]
+    ]
   ]
 
   let socialsDict = (
@@ -132,6 +146,7 @@
   color: moderncv-blue,
   subtitle-color: light-gray,
   socials-color: light-gray,
+  emphasize-header: false,
   lang: "en",
   font: "New Computer Modern",
   image-path: none,
@@ -185,6 +200,7 @@
     subtitle-color: subtitle-color,
     socials-color: socials-color,
     socials: social,
+    emphasize: emphasize-header,
   )
 
   #body
