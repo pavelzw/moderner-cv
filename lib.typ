@@ -232,7 +232,7 @@
   )
   cv-line(
     date,
-    elements.join(", "),
+    elements.slice(0, -1).join(", ") + elements.at(-1),
   )
 }
 
