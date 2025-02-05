@@ -44,8 +44,8 @@ You can download fontawesome [here](https://fontawesome.com/download).
     // custom socials: (icon, link, body)
     // any fontawesome icon can be used: https://fontawesome.com/search
     website: ("link", "https://example.me", "example.me"),
-    image-path: "/my-image.png",
   ),
+  image: image("my-image.png", height: 8em),
 )
 
 // ...
@@ -53,9 +53,8 @@ You can download fontawesome [here](https://fontawesome.com/download).
 
 ### Image
 
-To add an image to your curriculum vitae, you can a path to that image to the `image-path` parameter (the path should be from the root of your project and start with a `/`). Here are the additional parameters:
+To add an image to your curriculum vitae, you can pass an [image](https://typst.app/docs/reference/visualize/image/) to the `image` parameter. Here are the additional parameters:
 
-- `image-height`: size of the image
 - `image-frame-stroke`: stroke of the frame. By default is 1pt + the main of the file. Can be any stroke value. Set to `none` to remove the frame.
 
 ## Examples
