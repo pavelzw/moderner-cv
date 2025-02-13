@@ -41,6 +41,7 @@
     email: ("envelope", "mailto:"),
     github: ("github", "https://github.com/"),
     linkedin: ("linkedin", "https://linkedin.com/in/"),
+    homepage: ("link", "https://"),
     x: ("x-twitter", "https://twitter.com/"),
     bluesky: ("bluesky", "https://bsky.app/profile/"),
   )
