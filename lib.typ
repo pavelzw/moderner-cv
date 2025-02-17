@@ -236,6 +236,21 @@
     elements.join(", "),
   )
 }
+
+#let cv-entry-multiline(
+  date: [],
+  title: [],
+  employer: [],
+  ..description,
+) = {
+  let elements = (
+    strong(title),
+    emph(employer),
+    ..description.pos(),
+  )
+  cv-line(
+    date,
+    elements.slice(0, -1).join(", ") + linebreak() + text(size: 0.9em, elements.at(-1)),
   )
 }
 
