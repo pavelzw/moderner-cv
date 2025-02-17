@@ -32,7 +32,7 @@ You can download fontawesome [here](https://fontawesome.com/download).
 ## Usage
 
 ```typst
-#import "@preview/moderner-cv:0.1.2": *
+#import "@preview/moderner-cv:0.2.0": *
 
 #show: moderner-cv.with(
   name: "Jane Doe",
