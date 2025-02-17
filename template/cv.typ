@@ -30,17 +30,17 @@
 
 = Experience
 
-#cv-entry(
+#cv-entry-multiline(
   date: [4/2022 -- 7/2023],
   employer: [The Snake Company],
   title: [Snake Specialist],
-  [#linebreak()#text(10pt, lorem(30))],
+  [#text(10pt, lorem(30))],
 )
-#cv-entry(
+#cv-entry-multiline(
   date: [4/2022 -- 7/2023],
   employer: [Viper Ventures],
   title: [Working Student],
-  [#linebreak()#text(10pt, lorem(30))],
+  [#text(10pt, lorem(30))],
 )
 
 = Programming Skills
