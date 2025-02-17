@@ -11,6 +11,7 @@
     // custom socials: (icon, link, body)
     // any fontawesome icon can be used: https://fontawesome.com/search
     website: ("link", "https://example.me", "example.me"),
+    address: "Test Street 1, 12345 Example City",
   ),
 )
 
@@ -29,17 +30,17 @@
 
 = Experience
 
-#cv-entry(
+#cv-entry-multiline(
   date: [4/2022 -- 7/2023],
   employer: [The Snake Company],
   title: [Snake Specialist],
-  [#linebreak()#text(10pt, lorem(30))],
+  [#text(10pt, lorem(30))],
 )
-#cv-entry(
+#cv-entry-multiline(
   date: [4/2022 -- 7/2023],
   employer: [Viper Ventures],
   title: [Working Student],
-  [#linebreak()#text(10pt, lorem(30))],
+  [#text(10pt, lorem(30))],
 )
 
 = Programming Skills

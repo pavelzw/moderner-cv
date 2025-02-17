@@ -1,7 +1,7 @@
 #import "@preview/fontawesome:0.5.0": *
 
 #let _cv-line(left, right, ..args) = {
-  set block(below: 0pt)
+  set block(below: 0pt, above: 1pt)
   table(
     columns: (1fr, 5fr),
     stroke: none,
@@ -11,6 +11,7 @@
   )
 }
 #let moderncv-blue = rgb("#3973AF")
+#let light-gray = rgb("#737373")
 
 #let _header(
   title: [],
@@ -18,21 +19,45 @@
   image: none,
   image-frame-stroke: auto,
   color: moderncv-blue,
+  subtitle-color: light-gray,
+  socials-color: light-gray,
+  emphasize: false,
   socials: (:),
 ) = {
+  let subtitle-emphasis = "normal"
+  if emphasize {
+    subtitle-emphasis = "italic"
+  }
+
   let titleStack = stack(
     dir: ttb,
     spacing: 1em,
     text(size: 30pt, title),
-    text(size: 20pt, subtitle),
+    text(size: 20pt, subtitle, style: subtitle-emphasis, fill: subtitle-color),
   )
 
   let social(icon, link_prefix, username) = [
-    #fa-icon(icon) #link(link_prefix + username)[#username]
+    #if emphasize [
+      #emph[#text(socials-color)[#fa-icon(icon) #link(link_prefix + username)[#username]]]
+    ] else [
+      #text(socials-color)[#fa-icon(icon) #link(link_prefix + username)[#username]]
+    ]
   ]
 
   let custom-social(icon, dest, body) = [
-    #fa-icon(icon) #link(dest, body)
+    #if emphasize [
+      #emph[#text(socials-color)[#fa-icon(icon) #link(dest, body)]]
+    ] else [
+      #text(socials-color)[#fa-icon(icon) #link(dest, body)]
+    ]
+  ]
+
+  let address-social(icon, body) = [
+    #if emphasize [
+      #emph[#text(socials-color)[#fa-icon(icon) #body]]
+    ] else [
+      #text(socials-color)[#fa-icon(icon) #body]
+    ]
   ]
 
   let socialsDict = (
@@ -51,11 +76,15 @@
     assert(entry.len() == 2, message: "Invalid social entry length.")
     let (key, value) = entry
     if type(value) == str {
-      if key not in socialsDict {
-        panic("Unknown social key: " + key)
+      if (key == "address") {
+        socialsList.push(address-social("house", value))
+      } else {
+        if key not in socialsDict {
+          panic("Unknown social key: " + key)
+        }
+        let (icon, linkPrefix) = socialsDict.at(key)
+        socialsList.push(social(icon, linkPrefix, value))
       }
-      let (icon, linkPrefix) = socialsDict.at(key)
-      socialsList.push(social(icon, linkPrefix, value))
     } else if type(value) == array {
       assert(value.len() == 3, message: "Invalid social entry: " + key)
       let (icon, dest, body) = value
@@ -124,6 +153,9 @@
   subtitle: [CV],
   social: (:),
   color: moderncv-blue,
+  subtitle-color: light-gray,
+  socials-color: light-gray,
+  emphasize-header: false,
   lang: "en",
   font: "New Computer Modern",
   image: none,
@@ -172,7 +204,10 @@
     image: image,
     image-frame-stroke: image-frame-stroke,
     color: color,
+    subtitle-color: subtitle-color,
+    socials-color: socials-color,
     socials: social,
+    emphasize: emphasize-header,
   )
 
   #body
@@ -205,6 +240,26 @@
   cv-line(
     date,
     elements.join(", "),
+  )
+}
+
+#let cv-entry-multiline(
+  date: [],
+  title: [],
+  employer: [],
+  ..description,
+) = {
+  let elements = (
+    strong(title),
+    emph(employer),
+    ..description.pos(),
+  )
+  cv-line(
+    date,
+    elements.slice(0, -1).join(", ") + linebreak() + text(
+      size: 0.9em,
+      elements.at(-1),
+    ),
   )
 }
 
