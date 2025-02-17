@@ -233,7 +233,9 @@
   )
   cv-line(
     date,
-    elements.slice(0, -1).join(", ") + text(size: 0.9em, elements.at(-1)),
+    elements.join(", "),
+  )
+}
   )
 }
 
