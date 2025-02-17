@@ -11,6 +11,7 @@
     // custom socials: (icon, link, body)
     // any fontawesome icon can be used: https://fontawesome.com/search
     website: ("link", "https://example.me", "example.me"),
+    address: "Test Street 1, 12345 Example City",
   ),
 )
 
