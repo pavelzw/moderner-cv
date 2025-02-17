@@ -53,6 +53,14 @@
     ]
   ]
 
+  let address-social(icon, body) = [
+    #if emphasize [
+      #emph[#text(socials-color)[#fa-icon(icon) #body]]
+    ] else [
+      #text(socials-color)[#fa-icon(icon) #body]
+    ]    
+  ]
+
   let socialsDict = (
     // key: (faIcon, linkPrefix)
     phone: ("phone", "tel:"),
@@ -61,7 +69,6 @@
     linkedin: ("linkedin", "https://linkedin.com/in/"),
     x: ("x-twitter", "https://twitter.com/"),
     bluesky: ("bluesky", "https://bsky.app/profile/"),
-    address: ("", ""),
   )
 
   let socialsList = ()
@@ -70,11 +77,15 @@
     assert(entry.len() == 2, message: "Invalid social entry length.")
     let (key, value) = entry
     if type(value) == str {
-      if key not in socialsDict {
-        panic("Unknown social key: " + key)
+      if (key == "address") {
+        socialsList.push(address-social("house", value))
+      } else {
+        if key not in socialsDict {
+          panic("Unknown social key: " + key)
+        }
+        let (icon, linkPrefix) = socialsDict.at(key)
+        socialsList.push(social(icon, linkPrefix, value))
       }
-      let (icon, linkPrefix) = socialsDict.at(key)
-      socialsList.push(social(icon, linkPrefix, value))
     } else if type(value) == array {
       assert(value.len() == 3, message: "Invalid social entry: " + key)
       let (icon, dest, body) = value
