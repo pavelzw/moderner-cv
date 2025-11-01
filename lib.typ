@@ -38,9 +38,13 @@
 
   let social(icon, link_prefix, username) = [
     #if emphasize [
-      #emph[#text(socials-color)[#fa-icon(icon) #link(link_prefix + username)[#username]]]
+      #emph[#text(socials-color)[#fa-icon(icon) #link(
+          link_prefix + username,
+        )[#username]]]
     ] else [
-      #text(socials-color)[#fa-icon(icon) #link(link_prefix + username)[#username]]
+      #text(socials-color)[#fa-icon(icon) #link(
+          link_prefix + username,
+        )[#username]]
     ]
   ]
 
@@ -256,10 +260,12 @@
   )
   cv-line(
     date,
-    elements.slice(0, -1).join(", ") + linebreak() + text(
-      size: 0.9em,
-      elements.at(-1),
-    ),
+    elements.slice(0, -1).join(", ")
+      + linebreak()
+      + text(
+        size: 0.9em,
+        elements.at(-1),
+      ),
   )
 }
 
