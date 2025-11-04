@@ -11,7 +11,7 @@ pre-commit-run = "pre-commit run -a"
 [dependencies]
 typst = ">=0.12.0"
 typstyle = ">=0.12"
-font-otf-fontawesome = "*"
+font-otf-fontawesome = "7.*"
 typos = "*"
 pre-commit = "*"
 pre-commit-hooks = "*"

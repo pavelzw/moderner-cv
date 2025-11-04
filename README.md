@@ -26,7 +26,7 @@ You can download fontawesome [here](https://fontawesome.com/download).
 > [dependencies]
 > typst = ">=0.12.0"
 > typstyle = ">=0.12"
-> font-otf-fontawesome = "*"
+> font-otf-fontawesome = "7.*"
 > ```
 
 ## Usage
