@@ -259,7 +259,7 @@
     ..description.pos(),
   )
   cv-line(
-    align(right, date),
+    date,
     elements.slice(0, -1).join(", ")
       + linebreak()
       + text(
