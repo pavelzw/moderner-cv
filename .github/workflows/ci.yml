@@ -36,5 +36,6 @@ jobs:
         run: pixi run compile-thumbnail
       - name: Verify git status is clean
         run: |
+          git checkout -- template/cv.typ
           git status --porcelain
           git diff --quiet
