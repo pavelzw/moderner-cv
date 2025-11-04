@@ -258,8 +258,8 @@
     emph(employer),
     ..description.pos(),
   )
-  cv-line(
-    date,
+  _cv-line(
+    align(right, date),
     elements.slice(0, -1).join(", ")
       + linebreak()
       + text(
