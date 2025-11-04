@@ -35,9 +35,7 @@
   employer: [Cobra Collective],
   title: [Founder and Lead Developer],
   [
-    #text(
-      style: "italic",
-    )[#lorem(10)]
+    #text(style: "italic")[#lorem(10)]
     - #lorem(6)
     - #lorem(4)
   ],
