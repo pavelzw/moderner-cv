@@ -26,9 +26,15 @@ jobs:
       - name: Use local package
         run: |
           sed -i 's/#import .*/#import "..\/lib.typ": */' template/cv.typ
-      - name: compile
+      - name: Compile
         run: pixi run compile
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           path: template/cv.pdf
           if-no-files-found: error
+      - name: Compile thumbnail
+        run: pixi run compile-thumbnail
+      - name: Verify git status is clean
+        run: |
+          git status --porcelain
+          git diff --quiet
