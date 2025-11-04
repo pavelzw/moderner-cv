@@ -24,8 +24,8 @@ You can download fontawesome [here](https://fontawesome.com/download).
 >
 > ```toml
 > [dependencies]
-> typst = ">=0.12.0"
-> typstyle = ">=0.12"
+> typst = ">=0.14"
+> typstyle = ">=0.14"
 > font-otf-fontawesome = "*"
 > ```
 
