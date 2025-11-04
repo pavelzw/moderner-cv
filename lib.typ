@@ -226,7 +226,7 @@
 #let cv-line(left-side, right-side) = {
   _cv-line(
     align(right, left-side),
-    par(right-side, justify: true),
+    right-side,
   )
 }
 
@@ -258,7 +258,7 @@
     emph(employer),
     ..description.pos(),
   )
-  _cv-line(
+  cv-line(
     align(right, date),
     elements.slice(0, -1).join(", ")
       + linebreak()

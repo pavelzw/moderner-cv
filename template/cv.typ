@@ -46,7 +46,7 @@
   date: [4/2022 -- 7/2023],
   employer: [The Snake Company],
   title: [Snake Specialist],
-  [#text(10pt, lorem(30))],
+  [#text(10pt, lorem(25))],
 )
 #cv-entry-multiline(
   date: [4/2022 -- 7/2023],
