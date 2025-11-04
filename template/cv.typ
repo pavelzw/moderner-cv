@@ -1,4 +1,4 @@
-#import "@preview/moderner-cv:0.2.0": *
+#import "@preview/moderner-cv:0.2.1": *
 
 #show: moderner-cv.with(
   name: "Jane Doe",
@@ -31,10 +31,20 @@
 = Experience
 
 #cv-entry-multiline(
+  date: [6/2024 -- Present],
+  employer: [Cobra Collective],
+  title: [Founder and Lead Developer],
+  [
+    #text(style: "italic")[#lorem(10)]
+    - #lorem(6)
+    - #lorem(4)
+  ],
+)
+#cv-entry-multiline(
   date: [4/2022 -- 7/2023],
   employer: [The Snake Company],
   title: [Snake Specialist],
-  [#text(10pt, lorem(30))],
+  [#text(10pt, lorem(25))],
 )
 #cv-entry-multiline(
   date: [4/2022 -- 7/2023],

@@ -1,4 +1,4 @@
-#import "@preview/fontawesome:0.5.0": *
+#import "@preview/fontawesome:0.6.0": *
 
 #let _cv-line(left, right, ..args) = {
   set block(below: 0pt, above: 1pt)
@@ -226,7 +226,7 @@
 #let cv-line(left-side, right-side) = {
   _cv-line(
     align(right, left-side),
-    par(right-side, justify: true),
+    right-side,
   )
 }
 
