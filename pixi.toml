@@ -5,8 +5,9 @@ platforms = ["osx-arm64", "linux-64", "win-64"]
 
 [tasks]
 watch = "typst watch template/cv.typ --root ."
+# TODO: treat warnings as errors https://github.com/typst/typst/issues/6787
 compile = "typst compile template/cv.typ --root ."
-compile-thumbnail = "typst compile template/cv.typ assets/thumbnail.png --root ."
+compile-thumbnail = { cmd = "typst compile template/cv.typ assets/thumbnail.png --root .", env = { SOURCE_DATE_EPOCH = "1767225600" } }
 pre-commit-run = "pre-commit run -a"
 
 [dependencies]
