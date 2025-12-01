@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Set up pixi
-        uses: prefix-dev/setup-pixi@194d461b21b6c5717c722ffc597fa91ed2ff29fa
+        uses: prefix-dev/setup-pixi@82d477f15f3a381dbcc8adc1206ce643fe110fb7
       - name: pre-commit
         run: pixi run pre-commit-run --color=always --show-diff-on-failure
 
@@ -20,15 +20,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Set up pixi
-        uses: prefix-dev/setup-pixi@194d461b21b6c5717c722ffc597fa91ed2ff29fa
+        uses: prefix-dev/setup-pixi@82d477f15f3a381dbcc8adc1206ce643fe110fb7
       - name: Use local package
         run: |
           sed -i 's/#import .*/#import "..\/lib.typ": */' template/cv.typ
       - name: Compile
         run: pixi run compile
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           path: template/cv.pdf
           if-no-files-found: error
