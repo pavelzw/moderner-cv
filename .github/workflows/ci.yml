@@ -28,7 +28,7 @@ jobs:
           sed -i 's/#import .*/#import "..\/lib.typ": */' template/cv.typ
       - name: Compile
         run: pixi run compile
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           path: template/cv.pdf
           if-no-files-found: error
