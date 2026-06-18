@@ -70,5 +70,43 @@
   "interests": [
     { "name": "Snake Spotting" },
     { "name": "Collecting Venom" }
+  ],
+  "awards": [
+    {
+      "title": "Best New Researcher",
+      "date": "2023-11",
+      "awarder": "Herpetology Society",
+      "summary": "For contributions to field research."
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Reptile Handling License",
+      "date": "2022-05",
+      "issuer": "International Herpetological Association"
+    }
+  ],
+  "publications": [
+    {
+      "name": "Venom-tracking platform design",
+      "publisher": "Cobra Collective Tech Notes",
+      "releaseDate": "2024-09",
+      "summary": "A field-portable architecture for tracking venom samples in real time."
+    }
+  ],
+  "projects": [
+    {
+      "name": "Venom Atlas",
+      "description": "Open dataset of venom compositions.",
+      "startDate": "2023-01",
+      "endDate": "2024-03",
+      "highlights": ["Released v1 with 200 species"]
+    }
+  ],
+  "references": [
+    {
+      "name": "Dr. Salazar",
+      "reference": "Excellent field judgement and willingness to handle live cobras."
+    }
   ]
 }

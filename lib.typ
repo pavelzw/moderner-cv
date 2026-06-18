@@ -320,8 +320,26 @@
         + repr(rest.pos()),
     )
   }
+  let named = rest.named()
+  // The wrapper owns `body` (it composes header + body itself); a
+  // caller-supplied `body:` would collide with the trailing positional
+  // and panic with a confusing duplicate-argument error.
+  if "body" in named {
+    panic(
+      "moderner-cv-from-json controls the body. To inject custom markup, call `from-json-resume(data)` and compose `moderner-cv(...)` yourself.",
+    )
+  }
   let parts = from-json-resume(data)
+  // Merge `social:` key-by-key (rather than whole-dict replace) so a
+  // partial override doesn't silently drop the email / github / etc.
+  // fields derived from `basics`. Same for any other dict-valued kwarg.
   let header = parts.header
-  for (k, v) in rest.named() { header.insert(k, v) }
+  for (k, v) in named {
+    if k == "social" and type(v) == dictionary {
+      header.insert("social", (..header.at("social", default: (:)), ..v))
+    } else {
+      header.insert(k, v)
+    }
+  }
   moderner-cv(..header, parts.body)
 }

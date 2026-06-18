@@ -9,21 +9,55 @@
 // caller in `lib.typ` to avoid a cyclic `#import "../lib.typ"` —
 // `lib.typ` re-exports `from-json-resume` from this file.
 
-// JSON Resume permits YYYY, YYYY-MM, YYYY-MM-DD. Pass through as-is —
-// the rendered date column is freeform text, not a typed date.
+#let _months = (
+  "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+)
+
+// Iso8601 → "M/YYYY" / "YYYY", matching the template/cv.typ
+// convention (`#cv-entry(date: [6/2024 -- Present], ...)`). Defensive
+// against JSON-number years and out-of-range months — fall back to the
+// raw string rather than panic deep in render.
+#let _format-date(d) = {
+  if d == none or d == "" { return "" }
+  let s = if type(d) == str { d } else { str(d) }
+  let parts = s.split("-")
+  if parts.len() == 1 { return parts.at(0) }
+  let year = parts.at(0)
+  let mm = parts.at(1)
+  if mm.match(regex("^(0[1-9]|1[0-2])$")) != none {
+    return _months.at(int(mm) - 1) + "/" + year
+  }
+  year
+}
+
+// Open-ended ranges render as "… -- Present". A missing start with a
+// present end emits just the end (avoids a leading "-- 2024-06").
 #let _fmt-range(start-date, end-date) = {
-  let s = if start-date == none { "" } else { start-date }
-  let e = if end-date == none { "Present" } else { end-date }
-  if s == "" and e == "Present" { [] } else { [#s -- #e] }
+  let s = _format-date(start-date)
+  let e = if end-date == none or end-date == "" { "Present" } else { _format-date(end-date) }
+  if s == "" and e == "Present" { [] } else if s == "" { [#e] } else { [#s -- #e] }
 }
 
-#let _work-entries(r, items) = {
-  for w in items {
-    let date = _fmt-range(w.at("startDate", default: none), w.at("endDate", default: none))
-    let title = w.at("position", default: [])
-    let employer = w.at("name", default: [])
-    let summary = w.at("summary", default: none)
-    let highlights = w.at("highlights", default: ())
+// Empty `().join(...)` is `none` in Typst — coerce to a real string so
+// callers concatenating into content don't get unexpected blank cells.
+#let _safe-join(arr, sep) = if arr.len() == 0 { "" } else { arr.join(sep) }
+
+
+// ---- Body section emitters ----
+
+// Work-shaped sections (work / volunteer / projects) share a date
+// range + summary/highlights body. Only the heading field names differ.
+// `summary-key` is the field used for the italic-leading paragraph.
+#let _render-rich-entry(r, items, title-key, employer-key, summary-key) = {
+  for it in items {
+    let date = _fmt-range(
+      it.at("startDate", default: none),
+      it.at("endDate", default: none),
+    )
+    let title = it.at(title-key, default: [])
+    let employer = it.at(employer-key, default: [])
+    let summary = it.at(summary-key, default: none)
+    let highlights = it.at("highlights", default: ())
     let body = {
       if summary != none { text(style: "italic", summary) }
       if highlights.len() > 0 { list(..highlights) }
@@ -36,24 +70,9 @@
   }
 }
 
-#let _volunteer-entries(r, items) = {
-  for v in items {
-    let date = _fmt-range(v.at("startDate", default: none), v.at("endDate", default: none))
-    let title = v.at("position", default: [])
-    let employer = v.at("organization", default: [])
-    let summary = v.at("summary", default: none)
-    let highlights = v.at("highlights", default: ())
-    let body = {
-      if summary != none { text(style: "italic", summary) }
-      if highlights.len() > 0 { list(..highlights) }
-    }
-    if summary == none and highlights.len() == 0 {
-      (r.cv-entry)(date: date, title: title, employer: employer)
-    } else {
-      (r.cv-entry-multiline)(date: date, title: title, employer: employer, body)
-    }
-  }
-}
+#let _work-entries(r, items) = _render-rich-entry(r, items, "position", "name", "summary")
+#let _volunteer-entries(r, items) = _render-rich-entry(r, items, "position", "organization", "summary")
+#let _projects-entries(r, items) = _render-rich-entry(r, items, "name", "entity", "description")
 
 #let _education-entries(r, items) = {
   for ed in items {
@@ -73,12 +92,15 @@
   }
 }
 
-#let _awards-entries(r, items) = {
-  for a in items {
-    let date = a.at("date", default: [])
-    let title = a.at("title", default: [])
-    let employer = a.at("awarder", default: [])
-    let summary = a.at("summary", default: none)
+// Flat single-date sections (awards / certificates / publications)
+// share an `cv-entry`/`cv-entry-multiline` shape — only the field
+// names differ. `summary-key: none` for sections without a body field.
+#let _render-flat-entry(r, items, title-key, employer-key, date-key, summary-key) = {
+  for it in items {
+    let date = _format-date(it.at(date-key, default: none))
+    let title = it.at(title-key, default: [])
+    let employer = it.at(employer-key, default: [])
+    let summary = if summary-key != none { it.at(summary-key, default: none) } else { none }
     if summary == none {
       (r.cv-entry)(date: [#date], title: title, employer: employer)
     } else {
@@ -87,47 +109,9 @@
   }
 }
 
-#let _certificates-entries(r, items) = {
-  for c in items {
-    let date = c.at("date", default: [])
-    let title = c.at("name", default: [])
-    let employer = c.at("issuer", default: [])
-    (r.cv-entry)(date: [#date], title: title, employer: employer)
-  }
-}
-
-#let _publications-entries(r, items) = {
-  for p in items {
-    let date = p.at("releaseDate", default: [])
-    let title = p.at("name", default: [])
-    let employer = p.at("publisher", default: [])
-    let summary = p.at("summary", default: none)
-    if summary == none {
-      (r.cv-entry)(date: [#date], title: title, employer: employer)
-    } else {
-      (r.cv-entry-multiline)(date: [#date], title: title, employer: employer, summary)
-    }
-  }
-}
-
-#let _projects-entries(r, items) = {
-  for p in items {
-    let date = _fmt-range(p.at("startDate", default: none), p.at("endDate", default: none))
-    let title = p.at("name", default: [])
-    let employer = p.at("entity", default: [])
-    let description = p.at("description", default: none)
-    let highlights = p.at("highlights", default: ())
-    let body = {
-      if description != none { text(style: "italic", description) }
-      if highlights.len() > 0 { list(..highlights) }
-    }
-    if description == none and highlights.len() == 0 {
-      (r.cv-entry)(date: date, title: title, employer: employer)
-    } else {
-      (r.cv-entry-multiline)(date: date, title: title, employer: employer, body)
-    }
-  }
-}
+#let _awards-entries(r, items) = _render-flat-entry(r, items, "title", "awarder", "date", "summary")
+#let _certificates-entries(r, items) = _render-flat-entry(r, items, "name", "issuer", "date", none)
+#let _publications-entries(r, items) = _render-flat-entry(r, items, "name", "publisher", "releaseDate", "summary")
 
 // Skills render as `Label: kw, kw, kw` rows via cv-line so the
 // fixed left column stays consistent with the rest of the CV.
@@ -135,7 +119,7 @@
   for s in items {
     let name = s.at("name", default: [])
     let keywords = s.at("keywords", default: ())
-    (r.cv-line)(name, keywords.join(", "))
+    (r.cv-line)(name, _safe-join(keywords, ", "))
   }
 }
 
@@ -151,11 +135,7 @@
   for i in items {
     let name = i.at("name", default: [])
     let keywords = i.at("keywords", default: ())
-    if keywords.len() == 0 {
-      (r.cv-line)(name, [])
-    } else {
-      (r.cv-line)(name, keywords.join(", "))
-    }
+    (r.cv-line)(name, _safe-join(keywords, ", "))
   }
 }
 
