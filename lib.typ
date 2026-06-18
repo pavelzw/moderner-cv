@@ -336,7 +336,13 @@
   // on moderner-cv today; other kwargs whole-replace as expected.
   let header = parts.header
   for (k, v) in named {
-    if k == "social" and type(v) == dictionary {
+    if k == "social" {
+      if type(v) != dictionary {
+        panic(
+          "moderner-cv-from-json: `social:` override must be a dictionary; got "
+            + repr(type(v)) + ". Pass `social: (github: \"…\", linkedin: \"…\")` etc.",
+        )
+      }
       header.insert("social", (..header.at("social", default: (:)), ..v))
     } else {
       header.insert(k, v)
