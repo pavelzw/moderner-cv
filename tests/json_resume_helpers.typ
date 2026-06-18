@@ -45,8 +45,18 @@
 
 // No network at all → none.
 #assert.eq(_profile-to-social((:)), none)
-// No destination at all → none.
-#assert.eq(_profile-to-social((network: "GitHub")), none)
+// Empty network string → none (would otherwise create a "" social key).
+#assert.eq(_profile-to-social((network: "", url: "https://x")), none)
+// `Phone` / `Email` networks are basics-owned slots; skip rather than
+// silently clobber `basics.phone` / `basics.email`.
+#assert.eq(_profile-to-social((network: "Phone", username: "+1")), none)
+#assert.eq(_profile-to-social((network: "Email", username: "x@y.com")), none)
+// Known network with only URL falls to custom 3-tuple, but now picks up
+// the brand icon (was previously the generic "link" icon).
+#assert.eq(
+  _profile-to-social((network: "GitHub", url: "https://github.com/jane")),
+  ("github", ("github", "https://github.com/jane", "https://github.com/jane")),
+)
 
 
 // ---- _location-to-address ----

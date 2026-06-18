@@ -40,6 +40,15 @@
       "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo."
     }
   ],
+  "volunteer": [
+    {
+      "organization": "Herpetology Outreach",
+      "position": "Workshop Lead",
+      "startDate": "2021-06",
+      "endDate": "2022-04",
+      "summary": "Ran weekend snake-identification workshops for local schools."
+    }
+  ],
   "education": [
     {
       "institution": "Cobra Creek College",

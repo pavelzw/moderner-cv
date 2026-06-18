@@ -9,25 +9,29 @@
 // caller in `lib.typ` to avoid a cyclic `#import "../lib.typ"` —
 // `lib.typ` re-exports `from-json-resume` from this file.
 
-#let _months = (
-  "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
-)
+// Hoisted to module scope so the regex isn't recompiled per call.
+#let _ISO-YEAR-ONLY = regex("^\d{4}$")
+#let _ISO-YEAR-MONTH = regex("^\d{4}-(0[1-9]|1[0-2])$")
+#let _ISO-FULL = regex("^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$")
 
-// Iso8601 → "M/YYYY" / "YYYY", matching the template/cv.typ
-// convention (`#cv-entry(date: [6/2024 -- Present], ...)`). Defensive
-// against JSON-number years and out-of-range months — fall back to the
-// raw string rather than panic deep in render.
+// Iso8601 → "M/YYYY" (or "D/M/YYYY" for full dates), matching the
+// template/cv.typ convention. Non-ISO strings (e.g. `certificates.date`
+// is `str-type` only — not iso8601-validated — so users can legitimately
+// write "circa 2020" or "Spring 2023") pass through verbatim rather
+// than being mangled by partial parsing.
 #let _format-date(d) = {
   if d == none or d == "" { return "" }
   let s = if type(d) == str { d } else { str(d) }
-  let parts = s.split("-")
-  if parts.len() == 1 { return parts.at(0) }
-  let year = parts.at(0)
-  let mm = parts.at(1)
-  if mm.match(regex("^(0[1-9]|1[0-2])$")) != none {
-    return _months.at(int(mm) - 1) + "/" + year
+  if s.match(_ISO-YEAR-ONLY) != none { return s }
+  if s.match(_ISO-YEAR-MONTH) != none {
+    let parts = s.split("-")
+    return str(int(parts.at(1))) + "/" + parts.at(0)
   }
-  year
+  if s.match(_ISO-FULL) != none {
+    let parts = s.split("-")
+    return str(int(parts.at(2))) + "/" + str(int(parts.at(1))) + "/" + parts.at(0)
+  }
+  s
 }
 
 // Open-ended ranges render as "… -- Present". A missing start with a
@@ -48,6 +52,39 @@
 // Work-shaped sections (work / volunteer / projects) share a date
 // range + summary/highlights body. Only the heading field names differ.
 // `summary-key` is the field used for the italic-leading paragraph.
+// strict schema coerces JSON string values at content paths into `[#value]`,
+// so an empty string `""` becomes empty content `[]` — truthy as a value
+// but visually nothing. Treat it as absent for the multiline-vs-single
+// dispatch so we don't print a blank italic line under the title.
+#let _has-content(v) = v != none and v != [] and v != ""
+
+// lib.typ's `cv-entry` / `cv-entry-multiline` unconditionally emit
+// `emph(employer)` in the joined element list, so an empty employer
+// (e.g. `references[].name` with no organisation slot, or
+// `education[].institution` missing) leaves a dangling ", " in the
+// rendered output. Skip the emph when empty, otherwise behave
+// identically to cv-entry / cv-entry-multiline.
+#let _emit-entry(r, date, title, employer) = {
+  let elements = if _has-content(employer) {
+    (strong(title), emph(employer))
+  } else {
+    (strong(title),)
+  }
+  (r.cv-line)(date, elements.join(", "))
+}
+
+#let _emit-multiline(r, date, title, employer, body) = {
+  let elements = if _has-content(employer) {
+    (strong(title), emph(employer))
+  } else {
+    (strong(title),)
+  }
+  (r.cv-line)(
+    date,
+    elements.join(", ") + linebreak() + text(size: 0.9em, body),
+  )
+}
+
 #let _render-rich-entry(r, items, title-key, employer-key, summary-key) = {
   for it in items {
     let date = _fmt-range(
@@ -58,14 +95,15 @@
     let employer = it.at(employer-key, default: [])
     let summary = it.at(summary-key, default: none)
     let highlights = it.at("highlights", default: ())
-    let body = {
-      if summary != none { text(style: "italic", summary) }
-      if highlights.len() > 0 { list(..highlights) }
-    }
-    if summary == none and highlights.len() == 0 {
-      (r.cv-entry)(date: date, title: title, employer: employer)
+    let has-summary = _has-content(summary)
+    if not has-summary and highlights.len() == 0 {
+      _emit-entry(r, date, title, employer)
     } else {
-      (r.cv-entry-multiline)(date: date, title: title, employer: employer, body)
+      let body = {
+        if has-summary { text(style: "italic", summary) }
+        if highlights.len() > 0 { list(..highlights) }
+      }
+      _emit-multiline(r, date, title, employer, body)
     }
   }
 }
@@ -85,9 +123,15 @@
     let employer = ed.at("institution", default: [])
     let score = ed.at("score", default: none)
     if score == none {
-      (r.cv-entry)(date: date, title: title, employer: employer)
+      _emit-entry(r, date, title, employer)
     } else {
-      (r.cv-entry)(date: date, title: title, employer: employer)[#score]
+      // Score becomes an extra positional in the joined elements.
+      let elements = if _has-content(employer) {
+        (strong(title), emph(employer), [#score])
+      } else {
+        (strong(title), [#score])
+      }
+      (r.cv-line)(date, elements.join(", "))
     }
   }
 }
@@ -101,10 +145,10 @@
     let title = it.at(title-key, default: [])
     let employer = it.at(employer-key, default: [])
     let summary = if summary-key != none { it.at(summary-key, default: none) } else { none }
-    if summary == none {
-      (r.cv-entry)(date: [#date], title: title, employer: employer)
+    if not _has-content(summary) {
+      _emit-entry(r, [#date], title, employer)
     } else {
-      (r.cv-entry-multiline)(date: [#date], title: title, employer: employer, summary)
+      _emit-multiline(r, [#date], title, employer, summary)
     }
   }
 }
@@ -143,7 +187,7 @@
   for ref in items {
     let name = ref.at("name", default: [])
     let reference = ref.at("reference", default: [])
-    (r.cv-entry-multiline)(date: [], title: name, employer: [], reference)
+    _emit-multiline(r, [], name, [], reference)
   }
 }
 

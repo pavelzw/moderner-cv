@@ -332,7 +332,8 @@
   let parts = from-json-resume(data)
   // Merge `social:` key-by-key (rather than whole-dict replace) so a
   // partial override doesn't silently drop the email / github / etc.
-  // fields derived from `basics`. Same for any other dict-valued kwarg.
+  // fields derived from `basics`. `social` is the only dict-typed kwarg
+  // on moderner-cv today; other kwargs whole-replace as expected.
   let header = parts.header
   for (k, v) in named {
     if k == "social" and type(v) == dictionary {

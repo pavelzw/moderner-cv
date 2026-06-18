@@ -2,14 +2,24 @@
 // shape `moderner-cv(...)` expects. No Typst content emitted here —
 // the rendering layer lives in `json-resume.typ`.
 
-// moderner-cv's predefined `social` keys. Anything else is emitted
-// as a custom 3-tuple `(faIcon, url, body)` so the link still renders.
-#let _known-social-keys = ("phone", "email", "github", "linkedin", "x", "bluesky")
+// moderner-cv's predefined `social` keys (mirroring _header's
+// socialsDict in lib.typ:67-75). `phone` and `email` are also
+// predefined slots but they're sourced from `basics.phone` /
+// `basics.email` — a profile carrying `network: "Phone"` would
+// silently clobber the basics-derived entry, so we route those to
+// custom-link instead of the predefined slot.
+#let _basics-owned-keys = ("phone", "email")
+#let _known-social-keys = ("github", "linkedin", "x", "bluesky")
 
-// FontAwesome guesses for networks not in the predefined set. Falls
-// back to a generic "link" icon; users who care can post-process the
-// returned dict before handing it to `moderner-cv`.
+// FontAwesome icons keyed by lowercased network name. Predefined
+// keys are included so a known-network profile that has only a URL
+// (and so can't take the username-shaped predefined path) still
+// renders with its proper brand icon via the custom 3-tuple fallback.
 #let _network-icon = (
+  github: "github",
+  linkedin: "linkedin",
+  x: "x-twitter",
+  bluesky: "bluesky",
   twitter: "x-twitter",
   mastodon: "mastodon",
   gitlab: "gitlab",
@@ -24,15 +34,18 @@
 )
 
 /// Map a JSON Resume `basics.profiles[]` entry to a moderner-cv
-/// `social` dict pair. Predefined keys (`github`, `linkedin`, …) get
-/// a bare username; everything else becomes a custom `(icon, url, body)`
-/// 3-tuple. Returns `none` when there's no usable destination.
+/// `social` dict pair. Predefined keys (`github`, `linkedin`, `x`,
+/// `bluesky`) get a bare username; everything else becomes a custom
+/// `(icon, url, body)` 3-tuple. Returns `none` when there's no
+/// usable destination, the network is empty, or the network names
+/// a basics-owned slot (phone/email) which would clobber.
 ///
 /// -> (str, any) | none
 #let _profile-to-social(profile) = {
   let network = profile.at("network", default: none)
   if network == none { return none }
   let key = lower(network)
+  if key == "" or key in _basics-owned-keys { return none }
   // Normalize twitter → x to match moderner-cv's predefined key.
   if key == "twitter" { key = "x" }
   let username = profile.at("username", default: none)
@@ -61,6 +74,8 @@
 /// Build the kwargs for `moderner-cv.with(...)` from JSON Resume
 /// `basics`. `basics.url` has no predefined slot in moderner-cv so it
 /// surfaces as a `website` custom-social with a generic link icon.
+/// First-wins for duplicate profile networks (so if a user lists both
+/// `Twitter` and `X`, the first one in document order takes the slot).
 ///
 /// -> dictionary
 #let basics-to-header(basics) = {
@@ -79,7 +94,9 @@
   if url != none { social.insert("website", ("link", url, url)) }
   for profile in basics.at("profiles", default: ()) {
     let entry = _profile-to-social(profile)
-    if entry != none { social.insert(entry.at(0), entry.at(1)) }
+    if entry != none and entry.at(0) not in social {
+      social.insert(entry.at(0), entry.at(1))
+    }
   }
   let addr = _location-to-address(basics.at("location", default: none))
   if addr != none { social.insert("address", addr) }
