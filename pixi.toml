@@ -9,11 +9,15 @@ watch = "typst watch template/cv.typ --root ."
 # TODO: treat warnings as errors https://github.com/typst/typst/issues/6787
 compile = "typst compile template/cv.typ --root ."
 compile-thumbnail = { cmd = "typst compile template/cv.typ assets/thumbnail.png --root .", env = { SOURCE_DATE_EPOCH = "1767225600" } }
+test-json-resume = "typst compile tests/json_resume.typ /tmp/json_resume.pdf --root ."
+test-helpers = "typst compile tests/json_resume_helpers.typ /tmp/json_resume_helpers.pdf --root ."
 pre-commit-run = "pre-commit run -a"
 
 [dependencies]
-typst = ">=0.14"
-typstyle = ">=0.14"
+# Bumped to 0.15 along with typst.toml's `compiler` — gairm-import (pulled
+# in by internal/json-resume.typ at the top of lib.typ) requires 0.15+.
+typst = ">=0.15"
+typstyle = ">=0.15"
 font-otf-fontawesome = "*"
 typos = "*"
 pre-commit = "*"
