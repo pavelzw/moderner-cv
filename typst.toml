@@ -16,7 +16,7 @@ keywords = [
 ]
 categories = ["cv"]
 disciplines = []
-exclude = ["pixi.*", ".pixi"]
+exclude = ["pixi.*", ".pixi", "tests"]
 repository = "https://github.com/pavelzw/moderner-cv"
 
 [template]

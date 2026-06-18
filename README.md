@@ -57,6 +57,42 @@ To add an image to your curriculum vitae, you can pass an [image](https://typst.
 
 - `image-frame-stroke`: stroke of the frame. By default is 1pt + the main of the file. Can be any stroke value. Set to `none` to remove the frame.
 
+## Loading from a JSON Resume document
+
+If you already maintain your CV as a [JSON Resume](https://jsonresume.org/schema) `resume.json`, you can render it directly:
+
+```typst
+#import "@preview/moderner-cv:0.2.1": moderner-cv-from-json
+
+#moderner-cv-from-json(json("resume.json"))
+```
+
+Header overrides (e.g. `image:`, `subtitle:`, `lang:`) can be passed as named arguments and take precedence over what's inferred from `basics`:
+
+```typst
+#moderner-cv-from-json(
+  json("resume.json"),
+  image: image("me.png", height: 8em),
+  lang: "de",
+)
+```
+
+For finer control — overriding a single header field, stitching in custom sections, or skipping the built-in body layout — call `from-json-resume` directly:
+
+```typst
+#import "@preview/moderner-cv:0.2.1": *
+
+#let parts = from-json-resume(json("resume.json"))
+
+#show: moderner-cv.with(..parts.header)
+
+#parts.body
+= Custom Section
+// ...
+```
+
+Validation and the `basics → social` remap go through [`@preview/gairm-import`](https://typst.app/universe/package/gairm-import), so a malformed document aborts the compile with a combined error report rather than failing later in the renderer.
+
 ## Examples
 
 ![Jane Doe's CV](assets/thumbnail.png)

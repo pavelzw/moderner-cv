@@ -300,3 +300,31 @@
     [], list(item1), list(item2),
   )
 }
+
+#import "internal/json-resume.typ": from-json-resume as _from-json-resume
+
+// `from-json-resume(data)` -> `(header: <dict>, body: <content>)`.
+// `header` is the kwargs for `moderner-cv.with(...)`; `body` is the
+// trailing content. Split so advanced users can override or extend
+// either side. The wrapper below is the one-call form.
+#let from-json-resume(data) = _from-json-resume(
+  data,
+  renderers: (cv-entry: cv-entry, cv-entry-multiline: cv-entry-multiline, cv-line: cv-line),
+)
+
+// One-call form for `resume.json` users: validates + remaps and
+// renders. Extra named args override header kwargs derived from
+// `basics` (e.g. pass `image:` or override `subtitle:`). Extra
+// positionals are rejected to catch drift from the kwarg form.
+#let moderner-cv-from-json(data, ..rest) = {
+  if rest.pos().len() > 0 {
+    panic(
+      "moderner-cv-from-json takes one positional (`data`); pass header overrides as named arguments. Got extra positionals: "
+        + repr(rest.pos()),
+    )
+  }
+  let parts = from-json-resume(data)
+  let header = parts.header
+  for (k, v) in rest.named() { header.insert(k, v) }
+  moderner-cv(..header, parts.body)
+}

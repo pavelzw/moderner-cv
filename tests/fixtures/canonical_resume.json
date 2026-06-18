@@ -1,0 +1,92 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Jane Doe",
+    "label": "Snake Specialist",
+    "email": "jane.doe@example.com",
+    "phone": "+1-202-555-0117",
+    "url": "https://example.me",
+    "summary": "Herpetologist turned founder, building tools for venom research.",
+    "location": {
+      "address": "Test Street 1",
+      "postalCode": "12345",
+      "city": "Example City",
+      "countryCode": "US",
+      "region": "CA"
+    },
+    "profiles": [
+      { "network": "GitHub",   "username": "jane-doe", "url": "https://github.com/jane-doe" },
+      { "network": "LinkedIn", "username": "jane-doe", "url": "https://linkedin.com/in/jane-doe" },
+      { "network": "X",        "username": "jane_doe", "url": "https://twitter.com/jane_doe" },
+      { "network": "Mastodon", "username": "@jane@hachyderm.io", "url": "https://hachyderm.io/@jane" }
+    ]
+  },
+  "work": [
+    {
+      "name": "Cobra Collective",
+      "position": "Founder and Lead Developer",
+      "startDate": "2024-06",
+      "summary": "Bootstrapping a research collective.",
+      "highlights": [
+        "Shipped venom-tracking platform",
+        "Grew the team to five contributors"
+      ]
+    },
+    {
+      "name": "The Snake Company",
+      "position": "Snake Specialist",
+      "startDate": "2022-04",
+      "endDate": "2023-07",
+      "summary": "Field work and lab coordination."
+    }
+  ],
+  "education": [
+    {
+      "institution": "Cobra Creek College",
+      "area": "Ophiology",
+      "studyType": "M.Sc.",
+      "startDate": "2021-09",
+      "endDate": "2024-06",
+      "score": "3.9/4.0"
+    },
+    {
+      "institution": "Serpentis University",
+      "area": "Herpetology",
+      "studyType": "B.Sc.",
+      "startDate": "2018-09",
+      "endDate": "2021-06",
+      "score": "4.0/4.0"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Best New Researcher",
+      "date": "2023-11",
+      "awarder": "Herpetology Society",
+      "summary": "For contributions to field research."
+    }
+  ],
+  "skills": [
+    { "name": "Languages",    "keywords": ["Python", "Rust"] },
+    { "name": "Technologies", "keywords": ["Conda", "Boa", "Rattler-build"] }
+  ],
+  "languages": [
+    { "language": "English", "fluency": "Native" },
+    { "language": "French",  "fluency": "Fluent" },
+    { "language": "Dutch",   "fluency": "Advanced" }
+  ],
+  "interests": [
+    { "name": "Snake Spotting" },
+    { "name": "Collecting Venom" }
+  ],
+  "projects": [
+    {
+      "name": "Venom Atlas",
+      "description": "Open dataset of venom compositions.",
+      "startDate": "2023-01",
+      "endDate": "2024-03",
+      "url": "https://venom-atlas.example",
+      "highlights": ["Released v1 with 200 species"]
+    }
+  ]
+}
