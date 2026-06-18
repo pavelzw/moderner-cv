@@ -34,6 +34,10 @@ jobs:
           if-no-files-found: error
       - name: Compile thumbnail
         run: pixi run compile-thumbnail
+      - name: Compile JSON Resume smoke test
+        run: pixi run test-json-resume
+      - name: Compile JSON Resume helper unit tests
+        run: pixi run test-helpers
       - name: Verify git status is clean
         run: |
           git checkout -- template/cv.typ

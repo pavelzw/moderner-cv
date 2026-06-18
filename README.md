@@ -91,7 +91,7 @@ For finer control — overriding a single header field, stitching in custom sect
 // ...
 ```
 
-Validation and the `basics → social` remap go through [`@preview/gairm-import`](https://typst.app/universe/package/gairm-import), so a malformed document aborts the compile with a combined error report rather than failing later in the renderer.
+Validation goes through [`@preview/gairm-import`](https://typst.app/universe/package/gairm-import) — a malformed document aborts the compile with a combined error report rather than failing later in the renderer. The `basics → social` remap and the per-section body rendering live in this package (`internal/json-resume*.typ`).
 
 ## Examples
 
