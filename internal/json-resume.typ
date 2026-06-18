@@ -1,90 +1,13 @@
-// JSON Resume (https://jsonresume.org/schema) adapter for moderner-cv.
-// `from-json-resume` validates via @preview/gairm-import and remaps
-// to the dict shape `moderner-cv(...)` expects (header kwargs + body
-// content). The one-call `moderner-cv-from-json` wrapper lives in
-// `lib.typ`, where it can compose `moderner-cv` directly.
+// JSON Resume (https://jsonresume.org/schema) → moderner-cv adapter.
+// Header reshape lives in `json-resume-mapping.typ`; this file owns the
+// body rendering. `lib.typ` wraps both in a single one-call entry point.
 
 #import "@preview/gairm-import:0.8.1": parse as _parse, resume-schema-strict
+#import "json-resume-mapping.typ": basics-to-header
 
 // Renderer helpers (`cv-entry`, `cv-line`, …) are passed in by the
 // caller in `lib.typ` to avoid a cyclic `#import "../lib.typ"` —
 // `lib.typ` re-exports `from-json-resume` from this file.
-
-// moderner-cv's predefined `social` keys. Anything else is emitted
-// as a custom 3-tuple `(faIcon, url, body)` so the link still renders.
-#let _known-social-keys = ("phone", "email", "github", "linkedin", "x", "bluesky")
-
-// FontAwesome guesses for networks not in the predefined set. Falls
-// back to a generic "link" icon; users who care can post-process the
-// returned dict before handing it to `moderner-cv`.
-#let _network-icon = (
-  twitter: "x-twitter",
-  mastodon: "mastodon",
-  gitlab: "gitlab",
-  stackoverflow: "stack-overflow",
-  youtube: "youtube",
-  medium: "medium",
-  facebook: "facebook",
-  instagram: "instagram",
-  dribbble: "dribbble",
-  behance: "behance",
-  twitch: "twitch",
-)
-
-#let _profile-to-social(profile) = {
-  let network = profile.at("network", default: none)
-  if network == none { return none }
-  let key = lower(network)
-  // Normalize twitter -> x to match moderner-cv's predefined key.
-  if key == "twitter" { key = "x" }
-  let username = profile.at("username", default: none)
-  let url = profile.at("url", default: none)
-  if key in _known-social-keys and username != none {
-    return (key, username)
-  }
-  // Custom social: need an icon, a destination URL, and a body to show.
-  let dest = if url != none { url } else if username != none { username } else { return none }
-  let body = if username != none { username } else { url }
-  let icon = _network-icon.at(key, default: "link")
-  (key, (icon, dest, body))
-}
-
-#let _location-to-address(loc) = {
-  if loc == none { return none }
-  let parts = ()
-  for k in ("address", "postalCode", "city", "region", "countryCode") {
-    let v = loc.at(k, default: none)
-    if v != none and v != "" { parts.push(v) }
-  }
-  if parts.len() == 0 { none } else { parts.join(", ") }
-}
-
-#let _basics-to-header(basics) = {
-  let header = (:)
-  let name = basics.at("name", default: none)
-  if name != none { header.insert("name", name) }
-  let label = basics.at("label", default: none)
-  if label != none { header.insert("subtitle", label) }
-
-  let social = (:)
-  let phone = basics.at("phone", default: none)
-  if phone != none { social.insert("phone", phone) }
-  let email = basics.at("email", default: none)
-  if email != none { social.insert("email", email) }
-  let url = basics.at("url", default: none)
-  if url != none {
-    // moderner-cv has no top-level website key; use a custom social.
-    social.insert("website", ("link", url, url))
-  }
-  for profile in basics.at("profiles", default: ()) {
-    let entry = _profile-to-social(profile)
-    if entry != none { social.insert(entry.at(0), entry.at(1)) }
-  }
-  let addr = _location-to-address(basics.at("location", default: none))
-  if addr != none { social.insert("address", addr) }
-  header.insert("social", social)
-  header
-}
 
 // JSON Resume permits YYYY, YYYY-MM, YYYY-MM-DD. Pass through as-is —
 // the rendered date column is freeform text, not a typed date.
@@ -273,10 +196,8 @@
   parts.join()
 }
 
-// Returns `(header: <dict>, body: <content>)`. `header` is the named
-// args for `moderner-cv.with(...)`; `body` is the trailing content.
-// Split so callers can override header kwargs or stitch in custom
-// sections before rendering.
+// Returns `(header, body)`. Split so callers can override header
+// kwargs or stitch in custom sections before rendering.
 //
 // `renderers` is a dict of `(cv-entry:, cv-entry-multiline:, cv-line:)`
 // passed in by `lib.typ` — it can't be imported directly here without
@@ -289,7 +210,7 @@
     )
   }
   let resume = _parse(data, schema: resume-schema-strict)
-  let header = _basics-to-header(resume.at("basics", default: (:)))
+  let header = basics-to-header(resume.at("basics", default: (:)))
   let body = _body-from-resume(resume, renderers)
   (header: header, body: body)
 }
