@@ -29,7 +29,9 @@
   }
   if s.match(_ISO-FULL) != none {
     let parts = s.split("-")
-    return str(int(parts.at(2))) + "/" + str(int(parts.at(1))) + "/" + parts.at(0)
+    return (
+      str(int(parts.at(2))) + "/" + str(int(parts.at(1))) + "/" + parts.at(0)
+    )
   }
   s
 }
@@ -38,8 +40,12 @@
 // present end emits just the end (avoids a leading "-- 2024-06").
 #let _fmt-range(start-date, end-date) = {
   let s = _format-date(start-date)
-  let e = if end-date == none or end-date == "" { "Present" } else { _format-date(end-date) }
-  if s == "" and e == "Present" { [] } else if s == "" { [#e] } else { [#s -- #e] }
+  let e = if end-date == none or end-date == "" { "Present" } else {
+    _format-date(end-date)
+  }
+  if s == "" and e == "Present" { [] } else if s == "" { [#e] } else {
+    [#s -- #e]
+  }
 }
 
 // Empty `().join(...)` is `none` in Typst — coerce to a real string so
@@ -108,18 +114,41 @@
   }
 }
 
-#let _work-entries(r, items) = _render-rich-entry(r, items, "position", "name", "summary")
-#let _volunteer-entries(r, items) = _render-rich-entry(r, items, "position", "organization", "summary")
-#let _projects-entries(r, items) = _render-rich-entry(r, items, "name", "entity", "description")
+#let _work-entries(r, items) = _render-rich-entry(
+  r,
+  items,
+  "position",
+  "name",
+  "summary",
+)
+#let _volunteer-entries(r, items) = _render-rich-entry(
+  r,
+  items,
+  "position",
+  "organization",
+  "summary",
+)
+#let _projects-entries(r, items) = _render-rich-entry(
+  r,
+  items,
+  "name",
+  "entity",
+  "description",
+)
 
 #let _education-entries(r, items) = {
   for ed in items {
-    let date = _fmt-range(ed.at("startDate", default: none), ed.at("endDate", default: none))
+    let date = _fmt-range(ed.at("startDate", default: none), ed.at(
+      "endDate",
+      default: none,
+    ))
     let study = ed.at("studyType", default: none)
     let area = ed.at("area", default: none)
     let title = if study != none and area != none {
       [#study #area]
-    } else if study != none { [#study] } else if area != none { [#area] } else { [] }
+    } else if study != none { [#study] } else if area != none { [#area] } else {
+      []
+    }
     let employer = ed.at("institution", default: [])
     let score = ed.at("score", default: none)
     if score == none {
@@ -139,12 +168,21 @@
 // Flat single-date sections (awards / certificates / publications)
 // share an `cv-entry`/`cv-entry-multiline` shape — only the field
 // names differ. `summary-key: none` for sections without a body field.
-#let _render-flat-entry(r, items, title-key, employer-key, date-key, summary-key) = {
+#let _render-flat-entry(
+  r,
+  items,
+  title-key,
+  employer-key,
+  date-key,
+  summary-key,
+) = {
   for it in items {
     let date = _format-date(it.at(date-key, default: none))
     let title = it.at(title-key, default: [])
     let employer = it.at(employer-key, default: [])
-    let summary = if summary-key != none { it.at(summary-key, default: none) } else { none }
+    let summary = if summary-key != none {
+      it.at(summary-key, default: none)
+    } else { none }
     if not _has-content(summary) {
       _emit-entry(r, [#date], title, employer)
     } else {
@@ -153,9 +191,30 @@
   }
 }
 
-#let _awards-entries(r, items) = _render-flat-entry(r, items, "title", "awarder", "date", "summary")
-#let _certificates-entries(r, items) = _render-flat-entry(r, items, "name", "issuer", "date", none)
-#let _publications-entries(r, items) = _render-flat-entry(r, items, "name", "publisher", "releaseDate", "summary")
+#let _awards-entries(r, items) = _render-flat-entry(
+  r,
+  items,
+  "title",
+  "awarder",
+  "date",
+  "summary",
+)
+#let _certificates-entries(r, items) = _render-flat-entry(
+  r,
+  items,
+  "name",
+  "issuer",
+  "date",
+  none,
+)
+#let _publications-entries(r, items) = _render-flat-entry(
+  r,
+  items,
+  "name",
+  "publisher",
+  "releaseDate",
+  "summary",
+)
 
 // Skills render as `Label: kw, kw, kw` rows via cv-line so the
 // fixed left column stays consistent with the rest of the CV.
@@ -206,17 +265,72 @@
   let summary = resume.at("basics", default: (:)).at("summary", default: none)
   let parts = ()
   if summary != none { parts.push([#summary]) }
-  parts.push(_section("Experience", resume.at("work", default: ()), _work-entries, r))
-  parts.push(_section("Volunteer", resume.at("volunteer", default: ()), _volunteer-entries, r))
-  parts.push(_section("Education", resume.at("education", default: ()), _education-entries, r))
-  parts.push(_section("Projects", resume.at("projects", default: ()), _projects-entries, r))
-  parts.push(_section("Awards", resume.at("awards", default: ()), _awards-entries, r))
-  parts.push(_section("Certificates", resume.at("certificates", default: ()), _certificates-entries, r))
-  parts.push(_section("Publications", resume.at("publications", default: ()), _publications-entries, r))
-  parts.push(_section("Skills", resume.at("skills", default: ()), _skills-entries, r))
-  parts.push(_section("Languages", resume.at("languages", default: ()), _languages-entries, r))
-  parts.push(_section("Interests", resume.at("interests", default: ()), _interests-entries, r))
-  parts.push(_section("References", resume.at("references", default: ()), _references-entries, r))
+  parts.push(_section(
+    "Experience",
+    resume.at("work", default: ()),
+    _work-entries,
+    r,
+  ))
+  parts.push(_section(
+    "Volunteer",
+    resume.at("volunteer", default: ()),
+    _volunteer-entries,
+    r,
+  ))
+  parts.push(_section(
+    "Education",
+    resume.at("education", default: ()),
+    _education-entries,
+    r,
+  ))
+  parts.push(_section(
+    "Projects",
+    resume.at("projects", default: ()),
+    _projects-entries,
+    r,
+  ))
+  parts.push(_section(
+    "Awards",
+    resume.at("awards", default: ()),
+    _awards-entries,
+    r,
+  ))
+  parts.push(_section(
+    "Certificates",
+    resume.at("certificates", default: ()),
+    _certificates-entries,
+    r,
+  ))
+  parts.push(_section(
+    "Publications",
+    resume.at("publications", default: ()),
+    _publications-entries,
+    r,
+  ))
+  parts.push(_section(
+    "Skills",
+    resume.at("skills", default: ()),
+    _skills-entries,
+    r,
+  ))
+  parts.push(_section(
+    "Languages",
+    resume.at("languages", default: ()),
+    _languages-entries,
+    r,
+  ))
+  parts.push(_section(
+    "Interests",
+    resume.at("interests", default: ()),
+    _interests-entries,
+    r,
+  ))
+  parts.push(_section(
+    "References",
+    resume.at("references", default: ()),
+    _references-entries,
+    r,
+  ))
   parts.join()
 }
 

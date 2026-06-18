@@ -308,7 +308,11 @@
 // the body emitter.
 #let from-json-resume(data) = _from-json-resume(
   data,
-  renderers: (cv-entry: cv-entry, cv-entry-multiline: cv-entry-multiline, cv-line: cv-line),
+  renderers: (
+    cv-entry: cv-entry,
+    cv-entry-multiline: cv-entry-multiline,
+    cv-line: cv-line,
+  ),
 )
 
 // One-call form. Named args override header kwargs derived from `basics`;
@@ -340,7 +344,8 @@
       if type(v) != dictionary {
         panic(
           "moderner-cv-from-json: `social:` override must be a dictionary; got "
-            + repr(type(v)) + ". Pass `social: (github: \"…\", linkedin: \"…\")` etc.",
+            + repr(type(v))
+            + ". Pass `social: (github: \"…\", linkedin: \"…\")` etc.",
         )
       }
       header.insert("social", (..header.at("social", default: (:)), ..v))

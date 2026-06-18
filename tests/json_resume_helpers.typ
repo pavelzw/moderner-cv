@@ -4,7 +4,7 @@
 //   typst compile tests/json_resume_helpers.typ /tmp/sink.pdf --root .
 
 #import "../internal/json-resume-mapping.typ": (
-  _profile-to-social, _location-to-address, basics-to-header,
+  _location-to-address, _profile-to-social, basics-to-header,
 )
 
 
@@ -12,7 +12,11 @@
 
 // Predefined keys: bare username returned.
 #assert.eq(
-  _profile-to-social((network: "GitHub", username: "jane-doe", url: "https://github.com/jane-doe")),
+  _profile-to-social((
+    network: "GitHub",
+    username: "jane-doe",
+    url: "https://github.com/jane-doe",
+  )),
   ("github", "jane-doe"),
 )
 #assert.eq(
@@ -33,13 +37,24 @@
 // Unknown network with a known FontAwesome icon (mastodon) →
 // custom 3-tuple. Body falls back to username when no URL.
 #assert.eq(
-  _profile-to-social((network: "Mastodon", username: "@jane@hachyderm.io", url: "https://hachyderm.io/@jane")),
-  ("mastodon", ("mastodon", "https://hachyderm.io/@jane", "@jane@hachyderm.io")),
+  _profile-to-social((
+    network: "Mastodon",
+    username: "@jane@hachyderm.io",
+    url: "https://hachyderm.io/@jane",
+  )),
+  (
+    "mastodon",
+    ("mastodon", "https://hachyderm.io/@jane", "@jane@hachyderm.io"),
+  ),
 )
 
 // Unknown network with no FontAwesome guess → generic "link" icon.
 #assert.eq(
-  _profile-to-social((network: "ResearchGate", username: "jdoe", url: "https://researchgate.net/jdoe")),
+  _profile-to-social((
+    network: "ResearchGate",
+    username: "jdoe",
+    url: "https://researchgate.net/jdoe",
+  )),
   ("researchgate", ("link", "https://researchgate.net/jdoe", "jdoe")),
 )
 
