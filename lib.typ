@@ -235,20 +235,27 @@
   )
 }
 
+// Collects the comma-separated parts of a CV entry, skipping optional parts
+// that were not provided.
+#let _cv-entry-elements(title, employer, location, description) = {
+  (
+    strong(title),
+    emph(employer),
+    location,
+    ..description.pos(),
+  ).filter(e => e != none)
+}
+
 #let cv-entry(
   date: [],
   title: [],
   employer: [],
+  location: none,
   ..description,
 ) = {
-  let elements = (
-    strong(title),
-    emph(employer),
-    ..description.pos(),
-  )
   cv-line(
     date,
-    elements.join(", "),
+    _cv-entry-elements(title, employer, location, description).join(", "),
   )
 }
 
@@ -256,13 +263,10 @@
   date: [],
   title: [],
   employer: [],
+  location: none,
   ..description,
 ) = {
-  let elements = (
-    strong(title),
-    emph(employer),
-    ..description.pos(),
-  )
+  let elements = _cv-entry-elements(title, employer, location, description)
   cv-line(
     date,
     elements.slice(0, -1).join(", ")
