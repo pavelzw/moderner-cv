@@ -32,7 +32,7 @@ You can download fontawesome [here](https://fontawesome.com/download).
 ## Usage
 
 ```typst
-#import "@preview/moderner-cv:0.2.1": *
+#import "@preview/moderner-cv:0.2.2": *
 
 #show: moderner-cv.with(
   name: "Jane Doe",
@@ -49,6 +49,23 @@ You can download fontawesome [here](https://fontawesome.com/download).
 )
 
 // ...
+```
+
+### Icons
+
+Icons of custom socials can either be a string, which is interpreted as a [fontawesome](https://fontawesome.com/search) icon name, or arbitrary content.
+This allows you to use emojis or icons from other packages (e.g., a newer version of the fontawesome package):
+
+```typst
+#import "@preview/fontawesome:0.6.2": fa-icon
+
+#show: moderner-cv.with(
+  social: (
+    website: ("link", "https://example.me", "example.me"),
+    matrix: (fa-icon("matrix"), "https://matrix.to/#/@jane:matrix.org", "@jane:matrix.org"),
+    blog: (emoji.pencil, "https://blog.example.me", "blog.example.me"),
+  ),
+)
 ```
 
 ### Image

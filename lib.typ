@@ -1,4 +1,4 @@
-#import "@preview/fontawesome:0.6.0": *
+#import "@preview/fontawesome:0.6.2": *
 
 #let _cv-line(left, right, ..args) = {
   set block(below: 0pt, above: 1pt)
@@ -10,6 +10,10 @@
     right,
   )
 }
+// Renders an icon: strings are interpreted as fontawesome icon names,
+// any other content (e.g. emojis or icons from other packages) is used as is.
+#let _icon(icon) = if type(icon) == str { fa-icon(icon) } else { icon }
+
 #let moderncv-blue = rgb("#3973AF")
 #let light-gray = rgb("#737373")
 
@@ -38,11 +42,11 @@
 
   let social(icon, link_prefix, username) = [
     #if emphasize [
-      #emph[#text(socials-color)[#fa-icon(icon) #link(
+      #emph[#text(socials-color)[#_icon(icon) #link(
           link_prefix + username,
         )[#username]]]
     ] else [
-      #text(socials-color)[#fa-icon(icon) #link(
+      #text(socials-color)[#_icon(icon) #link(
           link_prefix + username,
         )[#username]]
     ]
@@ -50,17 +54,17 @@
 
   let custom-social(icon, dest, body) = [
     #if emphasize [
-      #emph[#text(socials-color)[#fa-icon(icon) #link(dest, body)]]
+      #emph[#text(socials-color)[#_icon(icon) #link(dest, body)]]
     ] else [
-      #text(socials-color)[#fa-icon(icon) #link(dest, body)]
+      #text(socials-color)[#_icon(icon) #link(dest, body)]
     ]
   ]
 
   let address-social(icon, body) = [
     #if emphasize [
-      #emph[#text(socials-color)[#fa-icon(icon) #body]]
+      #emph[#text(socials-color)[#_icon(icon) #body]]
     ] else [
-      #text(socials-color)[#fa-icon(icon) #body]
+      #text(socials-color)[#_icon(icon) #body]
     ]
   ]
 

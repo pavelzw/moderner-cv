@@ -1,4 +1,4 @@
-#import "@preview/moderner-cv:0.2.1": *
+#import "@preview/moderner-cv:0.2.2": *
 
 #show: moderner-cv.with(
   name: "Jane Doe",
@@ -10,6 +10,7 @@
     linkedin: "jane-doe",
     // custom socials: (icon, link, body)
     // any fontawesome icon can be used: https://fontawesome.com/search
+    // the icon can also be arbitrary content, e.g. an emoji: emoji.globe
     website: ("link", "https://example.me", "example.me"),
     address: "Test Street 1, 12345 Example City",
   ),
