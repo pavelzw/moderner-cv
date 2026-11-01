@@ -1,6 +1,6 @@
 [package]
 name = "moderner-cv"
-version = "0.2.1"
+version = "0.3.0"
 compiler = "0.15.1"
 entrypoint = "lib.typ"
 authors = ["Pavel Zwerschke <@pavelzw>"]
