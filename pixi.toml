@@ -18,3 +18,10 @@ font-otf-fontawesome = "*"
 typos = "*"
 pre-commit = "*"
 pre-commit-hooks = "*"
+
+[feature.typst-old.dependencies]
+# Keep in sync with `compiler` in typst.toml: the oldest Typst version we support.
+typst = "0.14.0.*"
+
+[environments]
+typst-old = ["typst-old"]
